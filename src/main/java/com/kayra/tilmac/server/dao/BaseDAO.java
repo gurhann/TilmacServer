@@ -12,7 +12,5 @@ public interface BaseDAO<T> {
 
 	public void delete(T t);
 
-	public Class<T> findByName(String text);
-
 	public void batchAdd(List<Class<T>> list);
 }
