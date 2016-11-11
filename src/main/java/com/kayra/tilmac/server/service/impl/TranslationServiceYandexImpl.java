@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
-import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.mapper.MeaningWordMapper;

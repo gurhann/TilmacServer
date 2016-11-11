@@ -20,14 +20,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.kayra.tilmac.server.dao.LanguageDAO;
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
-import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaningWord;
-import com.kayra.tilmac.server.model.MeaninglessWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceYandexImpl;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
@@ -44,13 +41,8 @@ public class TranslationServiceYandexImplParseWordListTest {
 	public TranslationService translationService = new TranslationServiceYandexImpl();
 
 	@Mock
-	public MeaninglessWordDAO meaninglessWordDAO;
-
-	@Mock
 	public MeaningWordDAO meaningWordDAO;
 
-	@Mock
-	public LanguageDAO languageDAO;
 
 	@Before
 	public void beforeClass() {
@@ -106,15 +98,12 @@ public class TranslationServiceYandexImplParseWordListTest {
 	public void givenParseWordListConsistBothWordTypeThenResponseNotConsistNullList() {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
-		List<MeaninglessWord> meaninglessWordList = CreateModelObjectUtil.createMeaningLessWordList();
 		List<MeaningWord> meaningWordList = CreateModelObjectUtil.createMeaningWordList();
 		List<BaseWordDTO> baseWordList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		baseWordList.addAll(CreateDTOObjectUtil.createMeaningBaseWordList());
 
 		when(meaningWordDAO.findByName("ase", engLang.getShortName())).thenThrow(NoResultException.class);
 		when(meaningWordDAO.findByName("qwe", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaninglessWordDAO.findByName("ase", engLang.getShortName())).thenReturn(meaninglessWordList.get(0));
-		when(meaninglessWordDAO.findByName("qwe", engLang.getShortName())).thenReturn(meaninglessWordList.get(1));
 		when(meaningWordDAO.findByName("go", engLang.getShortName())).thenReturn(meaningWordList.get(0));
 		when(meaningWordDAO.findByName("black", engLang.getShortName())).thenReturn(meaningWordList.get(1));
 
