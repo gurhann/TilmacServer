@@ -23,6 +23,14 @@ public class CreateDTOObjectUtil {
 		return langDTO;
 	}
 
+	public static LanguageDTO createTrLangDTO() {
+		LanguageDTO langDTO = new LanguageDTO();
+		langDTO.setId(2);
+		langDTO.setName("Turkish");
+		langDTO.setShortName("tr");
+		return langDTO;
+	}
+
 	public static List<BaseWordDTO> createMeaningBaseWordList() {
 
 		List<BaseWordDTO> meaningWordDTOLis = new ArrayList<>();
@@ -83,13 +91,47 @@ public class CreateDTOObjectUtil {
 		meaningWordDTO.setId(1L);
 		meaningWordDTO.setLang(langDTO);
 		meaningWordDTO.setWord("go");
+		meaningWordDTO.setTargetWordList(createTargetWordsForGo());
 		meaningWordDTOLis.add(meaningWordDTO);
 		meaningWordDTO = new MeaningWordDTO();
 		meaningWordDTO.setId(2L);
 		meaningWordDTO.setLang(langDTO);
 		meaningWordDTO.setWord("black");
+		meaningWordDTO.setTargetWordList(createTargetWordsForBlack());
 		meaningWordDTOLis.add(meaningWordDTO);
 		return meaningWordDTOLis;
+	}
+
+	public static List<BaseWordDTO> createTargetWordsForGo() {
+		List<BaseWordDTO> targetWordDTOList = new ArrayList<>();
+		LanguageDTO langDTO = createTrLangDTO();
+		BaseWordDTO baseWordDTO = new BaseWordDTO();
+		baseWordDTO.setId(10L);
+		baseWordDTO.setLang(langDTO);
+		baseWordDTO.setWord("gitmek");
+		targetWordDTOList.add(baseWordDTO);
+		baseWordDTO = new BaseWordDTO();
+		baseWordDTO.setId(11L);
+		baseWordDTO.setLang(langDTO);
+		baseWordDTO.setWord("geçmek");
+		targetWordDTOList.add(baseWordDTO);
+		return targetWordDTOList;
+	}
+
+	public static List<BaseWordDTO> createTargetWordsForBlack() {
+		List<BaseWordDTO> targetWordDTOList = new ArrayList<>();
+		LanguageDTO langDTO = createTrLangDTO();
+		BaseWordDTO baseWordDTO = new BaseWordDTO();
+		baseWordDTO.setId(12L);
+		baseWordDTO.setLang(langDTO);
+		baseWordDTO.setWord("siyah");
+		targetWordDTOList.add(baseWordDTO);
+		baseWordDTO = new BaseWordDTO();
+		baseWordDTO.setId(13L);
+		baseWordDTO.setLang(langDTO);
+		baseWordDTO.setWord("kara");
+		targetWordDTOList.add(baseWordDTO);
+		return targetWordDTOList;
 	}
 
 }
