@@ -44,7 +44,7 @@ public class TranslationServiceYandexImplParseWordListTest {
 	public MeaningWordDAO meaningWordDAO;
 
 	@Before
-	public void beforeClass() {
+	public void init() {
 		MockitoAnnotations.initMocks(this);
 	}
 
