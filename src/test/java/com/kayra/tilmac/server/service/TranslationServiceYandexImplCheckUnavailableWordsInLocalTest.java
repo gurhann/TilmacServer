@@ -100,7 +100,7 @@ public class TranslationServiceYandexImplCheckUnavailableWordsInLocalTest {
 		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(NoResultException.class);
 		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(NoResultException.class);
 		when(meaningLessWordDAO.findByName("ase", engLang.getShortName())).thenReturn(meaninglessWordList.get(0));
-		when(meaningLessWordDAO.findByName("qwe", engLang.getName())).thenReturn(meaninglessWordList.get(1));
+		when(meaningLessWordDAO.findByName("qwe", engLang.getShortName())).thenReturn(meaninglessWordList.get(1));
 
 		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(baseWordList);
 		List<MeaninglessWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessWordList();
