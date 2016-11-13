@@ -25,7 +25,7 @@ import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaninglessWord;
-import com.kayra.tilmac.server.service.impl.TranslationServiceYandexImpl;
+import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
 import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
 import com.kayra.tilmac.server.util.CreateModelObjectUtil;
@@ -38,7 +38,7 @@ public class TranslationServiceYandexImplCheckUnavailableWordsInLocalTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	@InjectMocks
-	public TranslationService translationService = new TranslationServiceYandexImpl();
+	public TranslationService translationService = new TranslationServiceImpl();
 
 	@Mock
 	public MeaninglessWordDAO meaningLessWordDAO;

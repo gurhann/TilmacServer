@@ -25,7 +25,7 @@ import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaningWord;
-import com.kayra.tilmac.server.service.impl.TranslationServiceYandexImpl;
+import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
 import com.kayra.tilmac.server.util.CreateModelObjectUtil;
@@ -38,7 +38,7 @@ public class TranslationServiceYandexImplParseWordListTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	@InjectMocks
-	public TranslationService translationService = new TranslationServiceYandexImpl();
+	public TranslationService translationService = new TranslationServiceImpl();
 
 	@Mock
 	public MeaningWordDAO meaningWordDAO;
@@ -115,5 +115,5 @@ public class TranslationServiceYandexImplParseWordListTest {
 		assertEquals(meaningLessWordDTOList.get(1), parseBaseWordList.getUnavailableWordList().get(1));
 
 	}
-
+	
 }

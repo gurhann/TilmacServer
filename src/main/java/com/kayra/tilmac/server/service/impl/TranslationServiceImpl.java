@@ -23,7 +23,7 @@ import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslateApi;
 
 @Service
-public class TranslationServiceYandexImpl implements TranslationService {
+public class TranslationServiceImpl implements TranslationService {
 
 	@Autowired
 	private MeaningWordDAO meaningWordDAO;
@@ -95,5 +95,7 @@ public class TranslationServiceYandexImpl implements TranslationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 }
