@@ -9,10 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
+import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
+import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.mapper.MeaningWordMapper;
+import com.kayra.tilmac.server.mapper.MeaninglessWordMapper;
 import com.kayra.tilmac.server.model.MeaningWord;
+import com.kayra.tilmac.server.model.MeaninglessWord;
 import com.kayra.tilmac.server.service.TranslationService;
 import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
@@ -23,6 +27,9 @@ public class TranslationServiceYandexImpl implements TranslationService {
 
 	@Autowired
 	private MeaningWordDAO meaningWordDAO;
+
+	@Autowired
+	private MeaninglessWordDAO meaninglessWordDAO;
 
 	@Override
 	public ResponseParseBaseWordList parseBaseWordList(List<BaseWordDTO> baseWordList) {
@@ -56,8 +63,31 @@ public class TranslationServiceYandexImpl implements TranslationService {
 
 	@Override
 	public ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal(List<BaseWordDTO> unavailableWordList) {
-		// TODO Auto-generated method stub
-		return null;
+		if (unavailableWordList == null || unavailableWordList.isEmpty()) {
+			throw new IllegalArgumentException("Request word list cannot be null or empty.");
+		}
+		ResponseCheckUnavaibleWordsForMeaninglesInLocal resp = new ResponseCheckUnavaibleWordsForMeaninglesInLocal();
+
+		List<MeaninglessWordDTO> meaninglessWordDTOList = null;
+		List<BaseWordDTO> unavailableWordDTOList = null;
+
+		for (BaseWordDTO unavailableWord : unavailableWordList) {
+			try {
+				MeaninglessWord meaninglessWord = meaninglessWordDAO.findByName(unavailableWord.getWord(), unavailableWord.getLang().getShortName());
+				if (meaninglessWordDTOList == null) {
+					meaninglessWordDTOList = new ArrayList<>();
+				}
+				meaninglessWordDTOList.add(MeaninglessWordMapper.modelToDto(meaninglessWord));
+			} catch (NoResultException e) {
+				if (unavailableWordDTOList == null) {
+					unavailableWordDTOList = new ArrayList<>();
+				}
+				unavailableWordDTOList.add(unavailableWord);
+			}
+		}
+		resp.setMeaninglessWordList(meaninglessWordDTOList);
+		resp.setUnavailableWordList(unavailableWordDTOList);
+		return resp;
 	}
 
 	@Override
