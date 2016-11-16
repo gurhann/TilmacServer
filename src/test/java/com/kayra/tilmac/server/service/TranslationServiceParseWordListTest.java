@@ -32,7 +32,7 @@ import com.kayra.tilmac.server.util.CreateModelObjectUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TranslationServiceYandexImplParseWordListTest {
+public class TranslationServiceParseWordListTest {
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
