@@ -17,13 +17,19 @@ import com.kayra.tilmac.server.mapper.MeaningWordMapper;
 import com.kayra.tilmac.server.mapper.MeaninglessWordMapper;
 import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.model.MeaninglessWord;
+import com.kayra.tilmac.server.service.TranslateAPIService;
 import com.kayra.tilmac.server.service.TranslationService;
 import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
+import com.kayra.tilmac.server.service.response.ResponseSearchInDictionary;
+import com.kayra.tilmac.server.service.response.ResponseSearchInTranslate;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslateApi;
 
 @Service
 public class TranslationServiceImpl implements TranslationService {
+
+	@Autowired
+	private TranslateAPIService translateAPIService;
 
 	@Autowired
 	private MeaningWordDAO meaningWordDAO;
@@ -92,10 +98,22 @@ public class TranslationServiceImpl implements TranslationService {
 
 	@Override
 	public ResponseSearchInTranslateApi searchInTranslateApi(List<BaseWordDTO> unavailableWordList) {
-		// TODO Auto-generated method stub
-		return null;
+		if (unavailableWordList == null || unavailableWordList.isEmpty()) {
+			throw new IllegalArgumentException("Request word list cannot be null or empty.");
+		}
+		ResponseSearchInTranslateApi resp = new ResponseSearchInTranslateApi();
+		ResponseSearchInDictionary searchInDictionary = translateAPIService.searchInDictionary(unavailableWordList);
+		resp.setMeaningWordList(searchInDictionary.getMeaningWordList());
+		if (searchInDictionary.getUnavailableWordList() != null) {
+			ResponseSearchInTranslate searchInTranslate = translateAPIService.searchInTranslate(searchInDictionary.getUnavailableWordList());
+			resp.setMeaninglessWordList(searchInTranslate.getMeaninglessWordList());
+			if (resp.getMeaningWordList() == null) {
+				resp.setMeaningWordList(searchInTranslate.getMeaningWordList());
+			} else {
+				resp.getMeaningWordList().addAll(searchInTranslate.getMeaningWordList());
+			}
+		}
+		return resp;
 	}
-	
-	
 
 }
