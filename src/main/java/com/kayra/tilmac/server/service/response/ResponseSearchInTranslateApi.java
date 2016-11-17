@@ -7,7 +7,7 @@ import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 
 public class ResponseSearchInTranslateApi {
 	private List<MeaningWordDTO> meaningWordList;
-	private List<MeaninglessWordDTO> meaningListWordList;
+	private List<MeaninglessWordDTO> meaninglessWordList;
 
 	public List<MeaningWordDTO> getMeaningWordList() {
 		return meaningWordList;
@@ -17,11 +17,11 @@ public class ResponseSearchInTranslateApi {
 		this.meaningWordList = meaningWordList;
 	}
 
-	public List<MeaninglessWordDTO> getMeaningListWordList() {
-		return meaningListWordList;
+	public List<MeaninglessWordDTO> getMeaninglessWordList() {
+		return meaninglessWordList;
 	}
 
-	public void setMeaningListWordList(List<MeaninglessWordDTO> meaningListWordList) {
-		this.meaningListWordList = meaningListWordList;
+	public void setMeaninglessWordList(List<MeaninglessWordDTO> meaningListWordList) {
+		this.meaninglessWordList = meaningListWordList;
 	}
 }

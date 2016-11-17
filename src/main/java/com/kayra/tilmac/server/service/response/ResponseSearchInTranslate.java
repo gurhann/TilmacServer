@@ -2,13 +2,13 @@ package com.kayra.tilmac.server.service.response;
 
 import java.util.List;
 
-import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
+import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 
 public class ResponseSearchInTranslate {
-	
+
 	private List<MeaningWordDTO> meaningWordList;
-	private List<BaseWordDTO> unavailableWordList;
+	private List<MeaninglessWordDTO> meaninglessWordList;
 
 	public List<MeaningWordDTO> getMeaningWordList() {
 		return meaningWordList;
@@ -18,11 +18,12 @@ public class ResponseSearchInTranslate {
 		this.meaningWordList = meaningWordList;
 	}
 
-	public List<BaseWordDTO> getUnavailableWordList() {
-		return unavailableWordList;
+	public List<MeaninglessWordDTO> getMeaninglessWordList() {
+		return meaninglessWordList;
 	}
 
-	public void setUnavailableWordList(List<BaseWordDTO> unavailableWordList) {
-		this.unavailableWordList = unavailableWordList;
+	public void setMeaninglessWordList(List<MeaninglessWordDTO> meaninglessWordList) {
+		this.meaninglessWordList = meaninglessWordList;
 	}
+
 }
