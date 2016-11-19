@@ -9,7 +9,7 @@ import com.kayra.tilmac.server.model.MeaningWord;
 public class MeaningWordDAOImpl extends BaseDAOImpl<MeaningWord> implements MeaningWordDAO {
 
 	@Override
-	public MeaningWord findByName(String text, String langShortName) {
+	public MeaningWord findByName(String text, String sourceLang, String targetLang) {
 		// TODO Auto-generated method stub
 		return null;
 	}

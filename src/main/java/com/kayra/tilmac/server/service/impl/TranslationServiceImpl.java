@@ -19,6 +19,9 @@ import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.model.MeaninglessWord;
 import com.kayra.tilmac.server.service.TranslateAPIService;
 import com.kayra.tilmac.server.service.TranslationService;
+import com.kayra.tilmac.server.service.request.RequestCheckUnavaibleWordsForMeaninglesInLocal;
+import com.kayra.tilmac.server.service.request.RequestParseBaseWordList;
+import com.kayra.tilmac.server.service.request.RequestSearchInTranslateApi;
 import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.service.response.ResponseSearchInDictionary;
@@ -38,8 +41,8 @@ public class TranslationServiceImpl implements TranslationService {
 	private MeaninglessWordDAO meaninglessWordDAO;
 
 	@Override
-	public ResponseParseBaseWordList parseBaseWordList(List<BaseWordDTO> baseWordList) {
-		if (baseWordList == null || baseWordList.isEmpty()) {
+	public ResponseParseBaseWordList parseBaseWordList(RequestParseBaseWordList req) {
+		if (req.getBaseWordList() == null || req.getBaseWordList().isEmpty()) {
 			throw new IllegalArgumentException("Request word list cannot be null or empty.");
 		}
 		ResponseParseBaseWordList resp = new ResponseParseBaseWordList();
@@ -47,9 +50,9 @@ public class TranslationServiceImpl implements TranslationService {
 		List<MeaningWordDTO> meaningWordDTOList = null;
 		List<BaseWordDTO> unavailableWordDTOList = null;
 
-		for (BaseWordDTO baseWord : baseWordList) {
+		for (BaseWordDTO baseWord : req.getBaseWordList()) {
 			try {
-				MeaningWord meaningWord = meaningWordDAO.findByName(baseWord.getWord(), baseWord.getLang().getShortName());
+				MeaningWord meaningWord = meaningWordDAO.findByName(baseWord.getWord(), req.getSourceLangCode(), req.getTargetLangCode());
 				if (meaningWordDTOList == null) {
 					meaningWordDTOList = new ArrayList<>();
 				}
@@ -68,8 +71,8 @@ public class TranslationServiceImpl implements TranslationService {
 	}
 
 	@Override
-	public ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal(List<BaseWordDTO> unavailableWordList) {
-		if (unavailableWordList == null || unavailableWordList.isEmpty()) {
+	public ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal(RequestCheckUnavaibleWordsForMeaninglesInLocal req) {
+		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
 			throw new IllegalArgumentException("Request word list cannot be null or empty.");
 		}
 		ResponseCheckUnavaibleWordsForMeaninglesInLocal resp = new ResponseCheckUnavaibleWordsForMeaninglesInLocal();
@@ -77,9 +80,9 @@ public class TranslationServiceImpl implements TranslationService {
 		List<MeaninglessWordDTO> meaninglessWordDTOList = null;
 		List<BaseWordDTO> unavailableWordDTOList = null;
 
-		for (BaseWordDTO unavailableWord : unavailableWordList) {
+		for (BaseWordDTO unavailableWord : req.getUnavailableWordList()) {
 			try {
-				MeaninglessWord meaninglessWord = meaninglessWordDAO.findByName(unavailableWord.getWord(), unavailableWord.getLang().getShortName());
+				MeaninglessWord meaninglessWord = meaninglessWordDAO.findByName(unavailableWord.getWord(), req.getSourceLangCode());
 				if (meaninglessWordDTOList == null) {
 					meaninglessWordDTOList = new ArrayList<>();
 				}
@@ -97,15 +100,16 @@ public class TranslationServiceImpl implements TranslationService {
 	}
 
 	@Override
-	public ResponseSearchInTranslateApi searchInTranslateApi(List<BaseWordDTO> unavailableWordList) {
-		if (unavailableWordList == null || unavailableWordList.isEmpty()) {
+	public ResponseSearchInTranslateApi searchInTranslateApi(RequestSearchInTranslateApi req) {
+		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
 			throw new IllegalArgumentException("Request word list cannot be null or empty.");
 		}
 		ResponseSearchInTranslateApi resp = new ResponseSearchInTranslateApi();
-		ResponseSearchInDictionary searchInDictionary = translateAPIService.searchInDictionary(unavailableWordList);
+		ResponseSearchInDictionary searchInDictionary = translateAPIService.searchInDictionary(req);
 		resp.setMeaningWordList(searchInDictionary.getMeaningWordList());
 		if (searchInDictionary.getUnavailableWordList() != null) {
-			ResponseSearchInTranslate searchInTranslate = translateAPIService.searchInTranslate(searchInDictionary.getUnavailableWordList());
+			req.setUnavailableWordList(searchInDictionary.getUnavailableWordList());
+			ResponseSearchInTranslate searchInTranslate = translateAPIService.searchInTranslate(req);
 			resp.setMeaninglessWordList(searchInTranslate.getMeaninglessWordList());
 			if (resp.getMeaningWordList() == null) {
 				resp.setMeaningWordList(searchInTranslate.getMeaningWordList());

@@ -26,6 +26,7 @@ import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaninglessWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
+import com.kayra.tilmac.server.service.request.RequestCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMeaninglesInLocal;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
 import com.kayra.tilmac.server.util.CreateModelObjectUtil;
@@ -51,13 +52,17 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 	@Test
 	public void givenWordListIstNullThenThrowException() {
 		exception.expect(IllegalArgumentException.class);
-		translationService.checkUnavailableWordsInLocal(null);
+		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
+		req.setUnavailableWordList(null);
+		translationService.checkUnavailableWordsInLocal(req);
 	}
 
 	@Test
 	public void givenWordListIsEmptyThenThrowException() {
 		exception.expect(IllegalArgumentException.class);
-		translationService.checkUnavailableWordsInLocal(new ArrayList<BaseWordDTO>());
+		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
+		req.setUnavailableWordList(new ArrayList<>());
+		translationService.checkUnavailableWordsInLocal(req);
 	}
 
 	@Test
@@ -68,7 +73,10 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 		when(meaningLessWordDAO.findByName("ase", engLang.getShortName())).thenReturn(meaninglessWordList.get(0));
 		when(meaningLessWordDAO.findByName("qwe", engLang.getShortName())).thenReturn(meaninglessWordList.get(1));
 
-		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(meaninglessBaseWordDTOList);
+		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
+		req.setUnavailableWordList(meaninglessBaseWordDTOList);
+		req.setSourceLangCode(engLang.getShortName());
+		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(req);
 		List<MeaninglessWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessWordList();
 		assertEquals(meaninglessWordDTOList.get(0), checkUnavailableWordsInLocal.getMeaninglessWordList().get(0));
 		assertEquals(meaninglessWordDTOList.get(1), checkUnavailableWordsInLocal.getMeaninglessWordList().get(1));
@@ -84,7 +92,10 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(NoResultException.class);
 		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(NoResultException.class);
 
-		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(meaningBaseWordDTOList);
+		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
+		req.setUnavailableWordList(meaningBaseWordDTOList);
+		req.setSourceLangCode(engLang.getShortName());
+		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(req);
 		assertEquals(meaningBaseWordDTOList.get(0), checkUnavailableWordsInLocal.getUnavailableWordList().get(0));
 		assertEquals(meaningBaseWordDTOList.get(1), checkUnavailableWordsInLocal.getUnavailableWordList().get(1));
 		assertNull(checkUnavailableWordsInLocal.getMeaninglessWordList());
@@ -102,7 +113,10 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 		when(meaningLessWordDAO.findByName("ase", engLang.getShortName())).thenReturn(meaninglessWordList.get(0));
 		when(meaningLessWordDAO.findByName("qwe", engLang.getShortName())).thenReturn(meaninglessWordList.get(1));
 
-		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(baseWordList);
+		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
+		req.setUnavailableWordList(baseWordList);
+		req.setSourceLangCode(engLang.getShortName());
+		ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal = translationService.checkUnavailableWordsInLocal(req);
 		List<MeaninglessWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessWordList();
 		List<BaseWordDTO> unavailableWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
 		assertEquals(meaninglessWordDTOList.get(0), checkUnavailableWordsInLocal.getMeaninglessWordList().get(0));

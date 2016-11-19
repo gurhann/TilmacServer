@@ -26,6 +26,7 @@ import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
+import com.kayra.tilmac.server.service.request.RequestParseBaseWordList;
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
 import com.kayra.tilmac.server.util.CreateModelObjectUtil;
@@ -51,15 +52,19 @@ public class TranslationServiceParseWordListTest {
 	@Test
 	public void givenParseWordListRequestWordListNullThenThrowException() {
 
+		RequestParseBaseWordList req = new RequestParseBaseWordList();
+		req.setBaseWordList(null);
 		exception.expect(IllegalArgumentException.class);
-		translationService.parseBaseWordList(null);
+		translationService.parseBaseWordList(req);
 	}
 
 	@Test
 	public void givenParseWordListRequestWordListEmptyThenThrowException() {
 
+		RequestParseBaseWordList req = new RequestParseBaseWordList();
+		req.setBaseWordList(new ArrayList<>());
 		exception.expect(IllegalArgumentException.class);
-		translationService.parseBaseWordList(new ArrayList<BaseWordDTO>());
+		translationService.parseBaseWordList(req);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,10 +72,16 @@ public class TranslationServiceParseWordListTest {
 	public void givenParseWordListAllWordsAreMeaninglessThenResponseReturnJustMeaninglessList() {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
+		Language trLang = CreateModelObjectUtil.createTrLang();
+
 		List<BaseWordDTO> meaningLessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
-		when(meaningWordDAO.findByName("ase", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningWordDAO.findByName("qwe", engLang.getShortName())).thenThrow(NoResultException.class);
-		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(meaningLessBaseWordDTOList);
+		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		RequestParseBaseWordList req = new RequestParseBaseWordList();
+		req.setBaseWordList(meaningLessBaseWordDTOList);
+		req.setSourceLangCode(engLang.getShortName());
+		req.setTargetLangCode(trLang.getShortName());
+		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(req);
 		List<BaseWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		assertEquals(meaninglessWordDTOList.get(0), parseBaseWordList.getUnavailableWordList().get(0));
 		assertEquals(meaninglessWordDTOList.get(1), parseBaseWordList.getUnavailableWordList().get(1));
@@ -81,11 +92,17 @@ public class TranslationServiceParseWordListTest {
 	public void givenParseWordListAllWordsAreMeaningThenResponseJustMeaningList() {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
+		Language trLang = CreateModelObjectUtil.createTrLang();
 		List<MeaningWord> meaningWordList = CreateModelObjectUtil.createMeaningWordList();
 		List<BaseWordDTO> meaningBaseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
-		when(meaningWordDAO.findByName("go", engLang.getShortName())).thenReturn(meaningWordList.get(0));
-		when(meaningWordDAO.findByName("black", engLang.getShortName())).thenReturn(meaningWordList.get(1));
-		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(meaningBaseWordDTOList);
+		when(meaningWordDAO.findByName("go", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(0));
+		when(meaningWordDAO.findByName("black", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(1));
+		RequestParseBaseWordList req = new RequestParseBaseWordList();
+		req.setBaseWordList(meaningBaseWordDTOList);
+		req.setSourceLangCode(engLang.getShortName());
+		req.setTargetLangCode(trLang.getShortName());
+		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(req);
+	
 		List<MeaningWordDTO> meaningWordDTOList = CreateDTOObjectUtil.createMeaningWordList();
 		assertEquals(meaningWordDTOList.get(0), parseBaseWordList.getMeaningWordList().get(0));
 		assertEquals(meaningWordDTOList.get(1), parseBaseWordList.getMeaningWordList().get(1));
@@ -97,16 +114,22 @@ public class TranslationServiceParseWordListTest {
 	public void givenParseWordListConsistBothWordTypeThenResponseNotConsistNullList() {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
+		Language trLang = CreateModelObjectUtil.createTrLang();
 		List<MeaningWord> meaningWordList = CreateModelObjectUtil.createMeaningWordList();
 		List<BaseWordDTO> baseWordList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		baseWordList.addAll(CreateDTOObjectUtil.createMeaningBaseWordList());
 
-		when(meaningWordDAO.findByName("ase", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningWordDAO.findByName("qwe", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningWordDAO.findByName("go", engLang.getShortName())).thenReturn(meaningWordList.get(0));
-		when(meaningWordDAO.findByName("black", engLang.getShortName())).thenReturn(meaningWordList.get(1));
+		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningWordDAO.findByName("go", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(0));
+		when(meaningWordDAO.findByName("black", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(1));
 
-		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(baseWordList);
+		RequestParseBaseWordList req = new RequestParseBaseWordList();
+		req.setBaseWordList(baseWordList);
+		req.setSourceLangCode(engLang.getShortName());
+		req.setTargetLangCode(trLang.getShortName());
+		ResponseParseBaseWordList parseBaseWordList = translationService.parseBaseWordList(req);
+	
 		List<MeaningWordDTO> meaningWordDTOList = CreateDTOObjectUtil.createMeaningWordList();
 		List<BaseWordDTO> meaningLessWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		assertEquals(meaningWordDTOList.get(0), parseBaseWordList.getMeaningWordList().get(0));
@@ -115,5 +138,5 @@ public class TranslationServiceParseWordListTest {
 		assertEquals(meaningLessWordDTOList.get(1), parseBaseWordList.getUnavailableWordList().get(1));
 
 	}
-	
+
 }

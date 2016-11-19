@@ -19,7 +19,7 @@ public class CreateDTOObjectUtil {
 		LanguageDTO langDTO = new LanguageDTO();
 		langDTO.setId(1);
 		langDTO.setName("English");
-		langDTO.setShortName("Eng");
+		langDTO.setShortName("en");
 		return langDTO;
 	}
 

@@ -18,7 +18,7 @@ public class CreateModelObjectUtil {
 		Language lang = new Language();
 		lang.setId(1);
 		lang.setName("English");
-		lang.setShortName("Eng");
+		lang.setShortName("en");
 		return lang;
 	}
 

@@ -2,7 +2,6 @@ package com.kayra.tilmac.server.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
+import com.kayra.tilmac.server.service.request.RequestSearchInTranslateApi;
 import com.kayra.tilmac.server.service.response.ResponseSearchInDictionary;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslate;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslateApi;
@@ -42,17 +42,22 @@ public class TranslationServiceSearchInTranslateAPITest {
 	@Test
 	public void givenWordListNullThenThrowException() {
 		exception.expect(IllegalArgumentException.class);
-		translationService.searchInTranslateApi(null);
+		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
+		req.setUnavailableWordList(null);
+		translationService.searchInTranslateApi(req);
 	}
 
 	@Test
 	public void givenWordListEmptyThenThrowException() {
 		exception.expect(IllegalArgumentException.class);
-		translationService.searchInTranslateApi(new ArrayList<BaseWordDTO>());
+		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
+		req.setUnavailableWordList(new ArrayList<>());
+		translationService.searchInTranslateApi(req);
 	}
 
 	@Test
 	public void givenWordsAreMeaninglessThenReturnJustMeaninglessList() {
+
 		List<BaseWordDTO> meaninglessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		List<MeaninglessWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessWordList();
 
@@ -63,13 +68,18 @@ public class TranslationServiceSearchInTranslateAPITest {
 		ResponseSearchInTranslate respSearchInTranslate = new ResponseSearchInTranslate();
 		respSearchInTranslate.setMeaningWordList(null);
 		respSearchInTranslate.setMeaninglessWordList(meaninglessWordDTOList);
-		
-		when(translateAPIService.searchInDictionary(meaninglessBaseWordDTOList)).thenReturn(respSearchInDirectory);
-		when(translateAPIService.searchInTranslate(meaninglessBaseWordDTOList)).thenReturn(respSearchInTranslate);
 
-		ResponseSearchInTranslateApi searchInTranslateApi = translationService.searchInTranslateApi(meaninglessBaseWordDTOList);
-//		verify(translateAPIService.searchInDictionary(meaninglessBaseWordDTOList));
-//		verify(translateAPIService.searchInTranslate(meaninglessBaseWordDTOList));
+		RequestSearchInTranslateApi reqSearchInTranslateApi = new RequestSearchInTranslateApi();
+		reqSearchInTranslateApi.setUnavailableWordList(meaninglessBaseWordDTOList);
+		reqSearchInTranslateApi.setSourceLangCode("en");
+		reqSearchInTranslateApi.setTargetLangCode("tr");
+		when(translateAPIService.searchInDictionary(reqSearchInTranslateApi)).thenReturn(respSearchInDirectory);
+		when(translateAPIService.searchInTranslate(reqSearchInTranslateApi)).thenReturn(respSearchInTranslate);
+
+		
+		ResponseSearchInTranslateApi searchInTranslateApi = translationService.searchInTranslateApi(reqSearchInTranslateApi);
+		// verify(translateAPIService.searchInDictionary(meaninglessBaseWordDTOList));
+		// verify(translateAPIService.searchInTranslate(meaninglessBaseWordDTOList));
 
 		assertEquals(meaninglessWordDTOList.get(0), searchInTranslateApi.getMeaninglessWordList().get(0));
 		assertEquals(meaninglessWordDTOList.get(1), searchInTranslateApi.getMeaninglessWordList().get(1));
@@ -88,13 +98,18 @@ public class TranslationServiceSearchInTranslateAPITest {
 		ResponseSearchInTranslate respSearchInTranslate = new ResponseSearchInTranslate();
 		respSearchInTranslate.setMeaningWordList(meaningWordDTOList);
 		respSearchInTranslate.setMeaninglessWordList(null);
-		
-		when(translateAPIService.searchInDictionary(meaningBaseWordDTOList)).thenReturn(respSearchInDirectory);
-		when(translateAPIService.searchInTranslate(meaningBaseWordDTOList)).thenReturn(respSearchInTranslate);
 
-		ResponseSearchInTranslateApi searchInTranslateApi = translationService.searchInTranslateApi(meaningBaseWordDTOList);
-//		verify(translateAPIService.searchInDictionary(meaningBaseWordDTOList));
-//		verify(translateAPIService.searchInTranslate(meaningBaseWordDTOList));
+		RequestSearchInTranslateApi reqSearchInTranslateApi = new RequestSearchInTranslateApi();
+		reqSearchInTranslateApi.setUnavailableWordList(meaningBaseWordDTOList);
+		reqSearchInTranslateApi.setSourceLangCode("en");
+		reqSearchInTranslateApi.setTargetLangCode("tr");
+		when(translateAPIService.searchInDictionary(reqSearchInTranslateApi)).thenReturn(respSearchInDirectory);
+		when(translateAPIService.searchInTranslate(reqSearchInTranslateApi)).thenReturn(respSearchInTranslate);
+
+	
+		ResponseSearchInTranslateApi searchInTranslateApi = translationService.searchInTranslateApi(reqSearchInTranslateApi);
+		// verify(translateAPIService.searchInDictionary(meaningBaseWordDTOList));
+		// verify(translateAPIService.searchInTranslate(meaningBaseWordDTOList));
 
 		assertEquals(meaningWordDTOList.get(0), searchInTranslateApi.getMeaningWordList().get(0));
 		assertEquals(meaningWordDTOList.get(1), searchInTranslateApi.getMeaningWordList().get(1));
