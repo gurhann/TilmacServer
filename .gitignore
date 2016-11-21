@@ -2,7 +2,7 @@
 .classpath
 .project
 .settings/
-*application.properties
+*yandex_key.properties
 
 # Intellij
 .idea/
