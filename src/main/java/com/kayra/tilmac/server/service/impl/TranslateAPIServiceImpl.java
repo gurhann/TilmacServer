@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
+import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.exception.WordNotFoundInDictApiException;
 import com.kayra.tilmac.server.exception.WordNotFoundInTranslateApiException;
 import com.kayra.tilmac.server.exception.YandexApiConnectException;
@@ -75,7 +76,7 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 		}
 		ResponseSearchInTranslate resp = new ResponseSearchInTranslate();
 		List<MeaningWordDTO> meaningWordList = null;
-		List<BaseWordDTO> unavailableWordList = null;
+		List<MeaninglessWordDTO> meaninglessWordList = null;
 		for (BaseWordDTO word : req.getUnavailableWordList()) {
 			try {
 				JsonNode result = getResultJSONFromApi(word.getWord(), req.getSourceLangCode(), req.getTargetLangCode(), ApiType.TRANSLATE);
@@ -95,12 +96,16 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 			} catch (YandexApiConnectException e) {
 				System.err.println(e.getMessage());
 			} catch (WordNotFoundInTranslateApiException e) {
-				if (unavailableWordList == null) {
-					unavailableWordList = new ArrayList<>();
+				if (meaninglessWordList == null) {
+					meaninglessWordList = new ArrayList<>();
 				}
-				unavailableWordList.add(word);
+				MeaninglessWordDTO meaninglessWord = new MeaninglessWordDTO();
+				meaninglessWord.setWord(word.getWord());
+				meaninglessWordList.add(meaninglessWord);
 			}
 		}
+		resp.setMeaningWordList(meaningWordList);
+		resp.setMeaninglessWordList(meaninglessWordList);
 		return resp;
 	}
 
@@ -128,7 +133,7 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 				JsonNode translationArrayNode = defNode.get(targetLangCode);
 				if (translationArrayNode.getNodeType() == JsonNodeType.ARRAY) {
 					for (JsonNode translationWordNode : translationArrayNode) {
-						translationWordList.add(translationWordNode.get("text").toString().toLowerCase());
+						translationWordList.add(translationWordNode.get("text").asText().toLowerCase());
 					}
 				}
 			}
@@ -139,12 +144,12 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 	private List<String> getWordListFromTranslateJson(String word, JsonNode node) throws WordNotFoundInTranslateApiException {
 		List<String> translationWordList = new ArrayList<>();
 		JsonNode translationArrayNode = node.get("text");
-		if (translationArrayNode == null) {
-			throw new WordNotFoundInTranslateApiException(word);
-		}
 		if (translationArrayNode.getNodeType() == JsonNodeType.ARRAY) {
+			if (translationArrayNode.size() == 0 || (translationArrayNode.size() == 1 && translationArrayNode.get(0).asText().equals(word))) {
+				throw new WordNotFoundInTranslateApiException(word);
+			}
 			for (int i = 0; i < translationArrayNode.size(); i++) {
-				translationWordList.add(translationArrayNode.get(i).toString());
+				translationWordList.add(translationArrayNode.get(i).asText());
 			}
 		}
 		return translationWordList;
