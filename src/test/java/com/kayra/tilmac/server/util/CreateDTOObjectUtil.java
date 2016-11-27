@@ -134,4 +134,22 @@ public class CreateDTOObjectUtil {
 		return targetWordDTOList;
 	}
 
+	public static List<BaseWordDTO> createMeaningBaseWordsForTranslate() {
+		List<BaseWordDTO> meaningWordDTOLis = new ArrayList<>();
+		LanguageDTO langDTO = createEngLangDTO();
+		MeaningWordDTO meaningWordDTO = new MeaningWordDTO();
+		meaningWordDTO.setId(21L);
+		meaningWordDTO.setLang(langDTO);
+		meaningWordDTO.setWord("going");
+		meaningWordDTO.setTargetWordList(createTargetWordsForGo());
+		meaningWordDTOLis.add(meaningWordDTO);
+		meaningWordDTO = new MeaningWordDTO();
+		meaningWordDTO.setId(22L);
+		meaningWordDTO.setLang(langDTO);
+		meaningWordDTO.setWord("asked");
+		meaningWordDTO.setTargetWordList(createTargetWordsForBlack());
+		meaningWordDTOLis.add(meaningWordDTO);
+		return meaningWordDTOLis;
+	}
+
 }
