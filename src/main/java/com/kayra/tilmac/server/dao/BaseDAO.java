@@ -12,5 +12,5 @@ public interface BaseDAO<T> {
 
 	public void delete(T t);
 
-	public void batchAdd(List<Class<T>> list);
+	public void batchAdd(List<T> list);
 }
