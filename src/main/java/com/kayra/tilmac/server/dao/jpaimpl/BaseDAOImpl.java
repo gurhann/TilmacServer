@@ -31,7 +31,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	}
 
 	@Override
-	public void batchAdd(List<Class<T>> list) {
+	public void batchAdd(List<T> list) {
 		// TODO Auto-generated method stub
 
 	}
