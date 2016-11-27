@@ -106,10 +106,13 @@ public class TranslationServiceImpl implements TranslationService {
 		}
 		ResponseSearchInTranslateApi resp = new ResponseSearchInTranslateApi();
 		ResponseSearchInDictionary searchInDictionary = translateAPIService.searchInDictionary(req);
+		saveMeaningWords(searchInDictionary.getMeaningWordList());
 		resp.setMeaningWordList(searchInDictionary.getMeaningWordList());
 		if (searchInDictionary.getUnavailableWordList() != null) {
 			req.setUnavailableWordList(searchInDictionary.getUnavailableWordList());
 			ResponseSearchInTranslate searchInTranslate = translateAPIService.searchInTranslate(req);
+			saveMeaninglessWords(searchInTranslate.getMeaninglessWordList());
+			saveMeaningWords(searchInDictionary.getMeaningWordList());
 			resp.setMeaninglessWordList(searchInTranslate.getMeaninglessWordList());
 			if (resp.getMeaningWordList() == null) {
 				resp.setMeaningWordList(searchInTranslate.getMeaningWordList());
@@ -118,6 +121,18 @@ public class TranslationServiceImpl implements TranslationService {
 			}
 		}
 		return resp;
+	}
+
+	private void saveMeaningWords(List<MeaningWordDTO> meaningWordList) {
+		if (meaningWordList != null) {
+			meaningWordDAO.batchAdd(MeaningWordMapper.dtoToModelList(meaningWordList));
+		}
+	}
+
+	private void saveMeaninglessWords(List<MeaninglessWordDTO> meaninglessWordList) {
+		if (meaninglessWordList != null) {
+			meaninglessWordDAO.batchAdd(MeaninglessWordMapper.dtoToModelList(meaninglessWordList));
+		}
 	}
 
 }
