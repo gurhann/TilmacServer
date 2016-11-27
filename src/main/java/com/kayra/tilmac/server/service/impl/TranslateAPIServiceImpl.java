@@ -51,6 +51,7 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 					targetWord.setWord(responseWordString);
 					targetWordList.add(targetWord);
 				}
+				meaningWord.setTargetWordList(targetWordList);
 				if (meaningWordList == null) {
 					meaningWordList = new ArrayList<>();
 				}
@@ -89,6 +90,7 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 					targetWord.setWord(responseWordString);
 					targetWordList.add(targetWord);
 				}
+				meaningWord.setTargetWordList(targetWordList);
 				if (meaningWordList == null) {
 					meaningWordList = new ArrayList<>();
 				}
