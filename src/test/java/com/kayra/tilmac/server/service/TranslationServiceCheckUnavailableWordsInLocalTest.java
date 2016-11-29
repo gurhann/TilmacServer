@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
+import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaninglessWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
@@ -50,23 +51,23 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 	}
 
 	@Test
-	public void givenWordListIstNullThenThrowException() {
-		exception.expect(IllegalArgumentException.class);
+	public void givenWordListIstNullThenThrowException() throws RequestWordListIsEmptyException {
 		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
 		req.setUnavailableWordList(null);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translationService.checkUnavailableWordsInLocal(req);
 	}
 
 	@Test
-	public void givenWordListIsEmptyThenThrowException() {
-		exception.expect(IllegalArgumentException.class);
+	public void givenWordListIsEmptyThenThrowException() throws RequestWordListIsEmptyException {
 		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
 		req.setUnavailableWordList(new ArrayList<>());
+		exception.expect(RequestWordListIsEmptyException.class);
 		translationService.checkUnavailableWordsInLocal(req);
 	}
 
 	@Test
-	public void givenWordListAllWordsAreMeaninglessThenResponseJustMeaninglessList() {
+	public void givenWordListAllWordsAreMeaninglessThenResponseJustMeaninglessList() throws RequestWordListIsEmptyException {
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		List<BaseWordDTO> meaninglessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		List<MeaninglessWord> meaninglessWordList = CreateModelObjectUtil.createMeaningLessWordList();
@@ -85,7 +86,7 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenWordListAllWordsAreUnavailableThenResponseJustUnavailableList() {
+	public void givenWordListAllWordsAreUnavailableThenResponseJustUnavailableList() throws RequestWordListIsEmptyException {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		List<BaseWordDTO> meaningBaseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
@@ -103,7 +104,7 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenWordListConsistBothWordTypeThenResponseNotConsistNullList() {
+	public void givenWordListConsistBothWordTypeThenResponseNotConsistNullList() throws RequestWordListIsEmptyException {
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		List<MeaninglessWord> meaninglessWordList = CreateModelObjectUtil.createMeaningLessWordList();
 		List<BaseWordDTO> baseWordList = CreateDTOObjectUtil.createMeaningLessBaseWordList();

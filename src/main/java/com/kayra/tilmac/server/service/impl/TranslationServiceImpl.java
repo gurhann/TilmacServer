@@ -13,6 +13,7 @@ import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
+import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.mapper.MeaningWordMapper;
 import com.kayra.tilmac.server.mapper.MeaninglessWordMapper;
 import com.kayra.tilmac.server.model.MeaningWord;
@@ -41,9 +42,9 @@ public class TranslationServiceImpl implements TranslationService {
 	private MeaninglessWordDAO meaninglessWordDAO;
 
 	@Override
-	public ResponseParseBaseWordList parseBaseWordList(RequestParseBaseWordList req) {
+	public ResponseParseBaseWordList parseBaseWordList(RequestParseBaseWordList req) throws RequestWordListIsEmptyException {
 		if (req.getBaseWordList() == null || req.getBaseWordList().isEmpty()) {
-			throw new IllegalArgumentException("Request word list cannot be null or empty.");
+			throw new RequestWordListIsEmptyException();
 		}
 		ResponseParseBaseWordList resp = new ResponseParseBaseWordList();
 
@@ -71,9 +72,9 @@ public class TranslationServiceImpl implements TranslationService {
 	}
 
 	@Override
-	public ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal(RequestCheckUnavaibleWordsForMeaninglesInLocal req) {
+	public ResponseCheckUnavaibleWordsForMeaninglesInLocal checkUnavailableWordsInLocal(RequestCheckUnavaibleWordsForMeaninglesInLocal req) throws RequestWordListIsEmptyException {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
-			throw new IllegalArgumentException("Request word list cannot be null or empty.");
+			throw new RequestWordListIsEmptyException();
 		}
 		ResponseCheckUnavaibleWordsForMeaninglesInLocal resp = new ResponseCheckUnavaibleWordsForMeaninglesInLocal();
 
@@ -100,9 +101,9 @@ public class TranslationServiceImpl implements TranslationService {
 	}
 
 	@Override
-	public ResponseSearchInTranslateApi searchInTranslateApi(RequestSearchInTranslateApi req) {
+	public ResponseSearchInTranslateApi searchInTranslateApi(RequestSearchInTranslateApi req) throws RequestWordListIsEmptyException {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
-			throw new IllegalArgumentException("Request word list cannot be null or empty.");
+			throw new RequestWordListIsEmptyException();
 		}
 		ResponseSearchInTranslateApi resp = new ResponseSearchInTranslateApi();
 		ResponseSearchInDictionary searchInDictionary = translateAPIService.searchInDictionary(req);

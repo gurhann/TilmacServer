@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
+import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.exception.WordNotFoundInDictApiException;
 import com.kayra.tilmac.server.exception.WordNotFoundInTranslateApiException;
 import com.kayra.tilmac.server.exception.YandexApiConnectException;
@@ -31,9 +32,9 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 	private final ResourceBundle rb = ResourceBundle.getBundle("yandex_key");
 
 	@Override
-	public ResponseSearchInDictionary searchInDictionary(RequestSearchInTranslateApi req) {
+	public ResponseSearchInDictionary searchInDictionary(RequestSearchInTranslateApi req) throws RequestWordListIsEmptyException {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
-			throw new IllegalArgumentException("Request word list can not be null or empty.");
+			throw new RequestWordListIsEmptyException();
 		}
 
 		ResponseSearchInDictionary resp = new ResponseSearchInDictionary();
@@ -71,9 +72,9 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 	}
 
 	@Override
-	public ResponseSearchInTranslate searchInTranslate(RequestSearchInTranslateApi req) {
+	public ResponseSearchInTranslate searchInTranslate(RequestSearchInTranslateApi req) throws RequestWordListIsEmptyException {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
-			throw new IllegalArgumentException("Request word list can not be null or empty.");
+			throw new RequestWordListIsEmptyException();
 		}
 		ResponseSearchInTranslate resp = new ResponseSearchInTranslate();
 		List<MeaningWordDTO> meaningWordList = null;

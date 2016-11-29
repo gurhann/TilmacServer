@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
+import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.service.impl.TranslateAPIServiceImpl;
 import com.kayra.tilmac.server.service.request.RequestSearchInTranslateApi;
 import com.kayra.tilmac.server.service.response.ResponseSearchInDictionary;
@@ -31,39 +32,39 @@ public class TranslateAPIServiceTest {
 	public TranslateAPIService translateAPIService = new TranslateAPIServiceImpl();
 
 	@Test
-	public void givenNullWordListWhenCallSearchInDictThenThrowException() {
+	public void givenNullWordListWhenCallSearchInDictThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
 		req.setUnavailableWordList(null);
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translateAPIService.searchInDictionary(req);
 	}
 
 	@Test
-	public void givenEmptyWordListWhenCallSearchInDictThenThrowException() {
+	public void givenEmptyWordListWhenCallSearchInDictThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
 		req.setUnavailableWordList(new ArrayList<>());
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translateAPIService.searchInDictionary(req);
 	}
 
 	@Test
-	public void givenNullWordListWhenCallSearchInTranslateThenThrowException() {
+	public void givenNullWordListWhenCallSearchInTranslateThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
 		req.setUnavailableWordList(null);
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translateAPIService.searchInTranslate(req);
 	}
 
 	@Test
-	public void givenEmptyWordListWhenCallSearchInTranslateThenThrowException() {
+	public void givenEmptyWordListWhenCallSearchInTranslateThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
 		req.setUnavailableWordList(new ArrayList<>());
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translateAPIService.searchInTranslate(req);
 	}
 
 	@Test
-	public void givenMeaninglessWordListWhenCallSearchInDictThenReturnJustUnavailableWordList() {
+	public void givenMeaninglessWordListWhenCallSearchInDictThenReturnJustUnavailableWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> meaninglessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
@@ -77,7 +78,7 @@ public class TranslateAPIServiceTest {
 	}
 
 	@Test
-	public void givenMeaninglessWordListWhenCallSearchInTranslateThenReturnJustMeaninglessWordList() {
+	public void givenMeaninglessWordListWhenCallSearchInTranslateThenReturnJustMeaninglessWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> meaninglessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		List<MeaninglessWordDTO> meaninglessWordDTOList = CreateDTOObjectUtil.createMeaningLessWordList();
 
@@ -93,7 +94,7 @@ public class TranslateAPIServiceTest {
 	}
 
 	@Test
-	public void givenMeaningWordListWhenCallSearchInDictionaryThenReturnJustMeaningWordList() {
+	public void givenMeaningWordListWhenCallSearchInDictionaryThenReturnJustMeaningWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> meaningBaseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
 
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
@@ -110,7 +111,7 @@ public class TranslateAPIServiceTest {
 	}
 
 	@Test
-	public void givenMeaningWordListWhenCallSearchInTranslateThenReturnJustMeaningWordList() {
+	public void givenMeaningWordListWhenCallSearchInTranslateThenReturnJustMeaningWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> meaningBaseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordsForTranslate();
 
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
@@ -127,7 +128,7 @@ public class TranslateAPIServiceTest {
 	}
 
 	@Test
-	public void givenBothOfWordListWhenCallSearchInDictionaryThenReturnBothOfWordList() {
+	public void givenBothOfWordListWhenCallSearchInDictionaryThenReturnBothOfWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> baseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
 		baseWordDTOList.addAll(CreateDTOObjectUtil.createMeaningLessBaseWordList());
 
@@ -146,7 +147,7 @@ public class TranslateAPIServiceTest {
 	}
 
 	@Test
-	public void givenBothOfWordListWhenCallSearchInTranslateThenReturnBothOfWordList() {
+	public void givenBothOfWordListWhenCallSearchInTranslateThenReturnBothOfWordList() throws RequestWordListIsEmptyException {
 		List<BaseWordDTO> baseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordsForTranslate();
 		baseWordDTOList.addAll(CreateDTOObjectUtil.createMeaningLessBaseWordList());
 

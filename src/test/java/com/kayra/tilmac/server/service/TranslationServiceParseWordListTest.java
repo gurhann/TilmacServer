@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
+import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
@@ -50,26 +51,26 @@ public class TranslationServiceParseWordListTest {
 	}
 
 	@Test
-	public void givenParseWordListRequestWordListNullThenThrowException() {
+	public void givenParseWordListRequestWordListNullThenThrowException() throws RequestWordListIsEmptyException {
 
 		RequestParseBaseWordList req = new RequestParseBaseWordList();
 		req.setBaseWordList(null);
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translationService.parseBaseWordList(req);
 	}
 
 	@Test
-	public void givenParseWordListRequestWordListEmptyThenThrowException() {
+	public void givenParseWordListRequestWordListEmptyThenThrowException() throws RequestWordListIsEmptyException {
 
 		RequestParseBaseWordList req = new RequestParseBaseWordList();
 		req.setBaseWordList(new ArrayList<>());
-		exception.expect(IllegalArgumentException.class);
+		exception.expect(RequestWordListIsEmptyException.class);
 		translationService.parseBaseWordList(req);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenParseWordListAllWordsAreMeaninglessThenResponseReturnJustMeaninglessList() {
+	public void givenParseWordListAllWordsAreMeaninglessThenResponseReturnJustMeaninglessList() throws RequestWordListIsEmptyException {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		Language trLang = CreateModelObjectUtil.createTrLang();
@@ -89,7 +90,7 @@ public class TranslationServiceParseWordListTest {
 	}
 
 	@Test
-	public void givenParseWordListAllWordsAreMeaningThenResponseJustMeaningList() {
+	public void givenParseWordListAllWordsAreMeaningThenResponseJustMeaningList() throws RequestWordListIsEmptyException {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		Language trLang = CreateModelObjectUtil.createTrLang();
@@ -111,7 +112,7 @@ public class TranslationServiceParseWordListTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void givenParseWordListConsistBothWordTypeThenResponseNotConsistNullList() {
+	public void givenParseWordListConsistBothWordTypeThenResponseNotConsistNullList() throws RequestWordListIsEmptyException {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		Language trLang = CreateModelObjectUtil.createTrLang();
