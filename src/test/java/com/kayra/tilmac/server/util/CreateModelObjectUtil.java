@@ -3,7 +3,6 @@ package com.kayra.tilmac.server.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kayra.tilmac.server.model.BaseWord;
 import com.kayra.tilmac.server.model.Language;
 import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.model.MeaninglessWord;
@@ -16,7 +15,6 @@ public class CreateModelObjectUtil {
 	public static Language createEngLang() {
 
 		Language lang = new Language();
-		lang.setId(1);
 		lang.setName("English");
 		lang.setShortName("en");
 		return lang;
@@ -25,7 +23,6 @@ public class CreateModelObjectUtil {
 	public static Language createTrLang() {
 
 		Language lang = new Language();
-		lang.setId(2);
 		lang.setName("Turkish");
 		lang.setShortName("tr");
 		return lang;
@@ -67,15 +64,15 @@ public class CreateModelObjectUtil {
 		return meaningWordList;
 	}
 
-	public static List<BaseWord> createTargetWordsForGo() {
-		List<BaseWord> targetWordList = new ArrayList<>();
+	public static List<MeaningWord> createTargetWordsForGo() {
+		List<MeaningWord> targetWordList = new ArrayList<>();
 		Language lang = createTrLang();
-		BaseWord baseWord = new BaseWord();
+		MeaningWord baseWord = new MeaningWord();
 		baseWord.setId(10L);
 		baseWord.setLang(lang);
 		baseWord.setWord("gitmek");
 		targetWordList.add(baseWord);
-		baseWord = new BaseWord();
+		baseWord = new MeaningWord();
 		baseWord.setId(11L);
 		baseWord.setLang(lang);
 		baseWord.setWord("geçmek");
@@ -83,15 +80,15 @@ public class CreateModelObjectUtil {
 		return targetWordList;
 	}
 
-	public static List<BaseWord> createTargetWordsForBlack() {
-		List<BaseWord> targetWordList = new ArrayList<>();
+	public static List<MeaningWord> createTargetWordsForBlack() {
+		List<MeaningWord> targetWordList = new ArrayList<>();
 		Language lang = createTrLang();
-		BaseWord baseWord = new BaseWord();
+		MeaningWord baseWord = new MeaningWord();
 		baseWord.setId(12L);
 		baseWord.setLang(lang);
 		baseWord.setWord("siyah");
 		targetWordList.add(baseWord);
-		baseWord = new BaseWord();
+		baseWord = new MeaningWord();
 		baseWord.setId(13L);
 		baseWord.setLang(lang);
 		baseWord.setWord("kara");

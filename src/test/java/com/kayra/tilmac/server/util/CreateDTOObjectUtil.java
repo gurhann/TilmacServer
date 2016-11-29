@@ -17,7 +17,6 @@ public class CreateDTOObjectUtil {
 	public static LanguageDTO createEngLangDTO() {
 
 		LanguageDTO langDTO = new LanguageDTO();
-		langDTO.setId(1);
 		langDTO.setName("English");
 		langDTO.setShortName("en");
 		return langDTO;
@@ -25,7 +24,6 @@ public class CreateDTOObjectUtil {
 
 	public static LanguageDTO createTrLangDTO() {
 		LanguageDTO langDTO = new LanguageDTO();
-		langDTO.setId(2);
 		langDTO.setName("Turkish");
 		langDTO.setShortName("tr");
 		return langDTO;
