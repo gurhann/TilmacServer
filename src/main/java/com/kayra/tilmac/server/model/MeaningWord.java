@@ -2,15 +2,22 @@ package com.kayra.tilmac.server.model;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity(name = "MeaningWord")
+@Table(name = "meaning_word")
 public class MeaningWord extends BaseWord {
 
-	private List<BaseWord> targetWordList;
+	@OneToMany
+	private List<MeaningWord> targetWordList;
 
-	public List<BaseWord> getTargetWordList() {
+	public List<MeaningWord> getTargetWordList() {
 		return targetWordList;
 	}
 
-	public void setTargetWordList(List<BaseWord> targetWordList) {
+	public void setTargetWordList(List<MeaningWord> targetWordList) {
 		this.targetWordList = targetWordList;
 	}
 

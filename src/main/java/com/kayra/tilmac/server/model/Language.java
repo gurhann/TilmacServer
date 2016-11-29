@@ -1,8 +1,25 @@
 package com.kayra.tilmac.server.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity(name = "Language")
+@Table(name = "language")
 public class Language {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "name")
 	private String name;
+
+	@Column(name = "short_name")
 	private String shortName;
 
 	public int getId() {

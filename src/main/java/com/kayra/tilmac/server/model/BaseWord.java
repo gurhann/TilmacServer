@@ -1,8 +1,24 @@
 package com.kayra.tilmac.server.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+
+@MappedSuperclass
 public class BaseWord {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private Long id;
+
+	@OneToOne
 	private Language lang;
+
+	@Column(name = "word")
 	private String word;
 
 	public Long getId() {
