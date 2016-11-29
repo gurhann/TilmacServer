@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.kayra.tilmac.server.dao.MeaningWordDAO;
+import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
@@ -40,6 +42,12 @@ public class TranslationServiceSearchInTranslateAPITest {
 	@Mock
 	public TranslateAPIService translateAPIService;
 
+	@Mock
+	public MeaninglessWordDAO meaninglessDAO;
+
+	@Mock
+	public MeaningWordDAO meaningWordDAO;
+	
 	@Test
 	public void givenWordListNullThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
