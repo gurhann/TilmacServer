@@ -3,6 +3,7 @@ package com.kayra.tilmac.server.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
+import com.kayra.tilmac.server.exception.SourceLangAndTargetLangAreSameException;
 import com.kayra.tilmac.server.rest.request.RequestTranlateWords;
 import com.kayra.tilmac.server.rest.response.ResponseTranslateWords;
 import com.kayra.tilmac.server.service.TranslationService;
@@ -18,7 +19,7 @@ public class TranslateWordService {
 	@Autowired
 	private TranslationService translationService;
 
-	public ResponseTranslateWords translateWords(RequestTranlateWords req) throws RequestWordListIsEmptyException {
+	public ResponseTranslateWords translateWords(RequestTranlateWords req) throws RequestWordListIsEmptyException, SourceLangAndTargetLangAreSameException {
 
 		checkInput(req);
 
@@ -79,7 +80,7 @@ public class TranslateWordService {
 		return resp;
 	}
 
-	private void checkInput(RequestTranlateWords req) throws RequestWordListIsEmptyException {
+	private void checkInput(RequestTranlateWords req) throws RequestWordListIsEmptyException, SourceLangAndTargetLangAreSameException {
 		if (req.getBaseWordList() == null || req.getBaseWordList().isEmpty()) {
 			throw new RequestWordListIsEmptyException();
 		}
@@ -89,7 +90,7 @@ public class TranslateWordService {
 		}
 
 		if (req.getSourceLang().equals(req.getTargetLang() == null)) {
-			throw new RequestWordListIsEmptyException();
+			throw new SourceLangAndTargetLangAreSameException();
 		}
 	}
 }
