@@ -34,4 +34,41 @@ public class RequestParseBaseWordList {
 		this.targetLangCode = targetLangCode;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((baseWordList == null) ? 0 : baseWordList.hashCode());
+		result = prime * result + ((sourceLangCode == null) ? 0 : sourceLangCode.hashCode());
+		result = prime * result + ((targetLangCode == null) ? 0 : targetLangCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RequestParseBaseWordList other = (RequestParseBaseWordList) obj;
+		if (baseWordList == null) {
+			if (other.baseWordList != null)
+				return false;
+		} else if (!baseWordList.equals(other.baseWordList))
+			return false;
+		if (sourceLangCode == null) {
+			if (other.sourceLangCode != null)
+				return false;
+		} else if (!sourceLangCode.equals(other.sourceLangCode))
+			return false;
+		if (targetLangCode == null) {
+			if (other.targetLangCode != null)
+				return false;
+		} else if (!targetLangCode.equals(other.targetLangCode))
+			return false;
+		return true;
+	}
+
 }
