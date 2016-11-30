@@ -89,7 +89,7 @@ public class TranslateWordService {
 			throw new RequestWordListIsEmptyException();
 		}
 
-		if (req.getSourceLang().equals(req.getTargetLang() == null)) {
+		if (req.getSourceLang().equals(req.getTargetLang())) {
 			throw new SourceLangAndTargetLangAreSameException();
 		}
 	}
