@@ -46,6 +46,22 @@ public class CreateDTOObjectUtil {
 		return meaningWordDTOLis;
 	}
 
+	public static List<BaseWordDTO> createMeaningBaseWordListNotInDB() {
+		List<BaseWordDTO> meaningWordDTOLis = new ArrayList<>();
+		LanguageDTO lang = createEngLangDTO();
+		BaseWordDTO meaningWordDTO = new BaseWordDTO();
+		meaningWordDTO.setId(1346L);
+		meaningWordDTO.setLang(lang);
+		meaningWordDTO.setWord("fight");
+		meaningWordDTOLis.add(meaningWordDTO);
+		meaningWordDTO = new BaseWordDTO();
+		meaningWordDTO.setId(2346L);
+		meaningWordDTO.setLang(lang);
+		meaningWordDTO.setWord("kernel");
+		meaningWordDTOLis.add(meaningWordDTO);
+		return meaningWordDTOLis;
+	}
+
 	public static List<MeaninglessWordDTO> createMeaningLessWordList() {
 
 		List<MeaninglessWordDTO> meaninglessWordDTOList = new ArrayList<>();
@@ -59,6 +75,23 @@ public class CreateDTOObjectUtil {
 		meaninglessWordDTO.setId(2L);
 		meaninglessWordDTO.setLang(langDTO);
 		meaninglessWordDTO.setWord("qwe");
+		meaninglessWordDTOList.add(meaninglessWordDTO);
+		return meaninglessWordDTOList;
+	}
+
+	public static List<MeaninglessWordDTO> createMeaningLessWordListNotInDB() {
+
+		List<MeaninglessWordDTO> meaninglessWordDTOList = new ArrayList<>();
+		LanguageDTO langDTO = createEngLangDTO();
+		MeaninglessWordDTO meaninglessWordDTO = new MeaninglessWordDTO();
+		meaninglessWordDTO.setId(1643L);
+		meaninglessWordDTO.setLang(langDTO);
+		meaninglessWordDTO.setWord("eeee");
+		meaninglessWordDTOList.add(meaninglessWordDTO);
+		meaninglessWordDTO = new MeaninglessWordDTO();
+		meaninglessWordDTO.setId(2345L);
+		meaninglessWordDTO.setLang(langDTO);
+		meaninglessWordDTO.setWord("zzzz");
 		meaninglessWordDTOList.add(meaninglessWordDTO);
 		return meaninglessWordDTOList;
 	}
@@ -81,6 +114,23 @@ public class CreateDTOObjectUtil {
 
 	}
 
+	public static List<BaseWordDTO> createMeaningLessBaseWordListNotInDB() {
+
+		List<BaseWordDTO> meaninglessWordDTOList = new ArrayList<>();
+		LanguageDTO langDTO = createEngLangDTO();
+		BaseWordDTO meaninglessWordDTO = new BaseWordDTO();
+		meaninglessWordDTO.setId(156L);
+		meaninglessWordDTO.setLang(langDTO);
+		meaninglessWordDTO.setWord("eeee");
+		meaninglessWordDTOList.add(meaninglessWordDTO);
+		meaninglessWordDTO = new BaseWordDTO();
+		meaninglessWordDTO.setId(2232L);
+		meaninglessWordDTO.setLang(langDTO);
+		meaninglessWordDTO.setWord("zzzz");
+		meaninglessWordDTOList.add(meaninglessWordDTO);
+		return meaninglessWordDTOList;
+	}
+
 	public static List<MeaningWordDTO> createMeaningWordList() {
 
 		List<MeaningWordDTO> meaningWordDTOLis = new ArrayList<>();
@@ -93,6 +143,25 @@ public class CreateDTOObjectUtil {
 		meaningWordDTOLis.add(meaningWordDTO);
 		meaningWordDTO = new MeaningWordDTO();
 		meaningWordDTO.setId(2L);
+		meaningWordDTO.setLang(langDTO);
+		meaningWordDTO.setWord("black");
+		meaningWordDTO.setTargetWordList(createTargetWordsForBlack());
+		meaningWordDTOLis.add(meaningWordDTO);
+		return meaningWordDTOLis;
+	}
+
+	public static List<MeaningWordDTO> createMeaningWordListNotInDB() {
+
+		List<MeaningWordDTO> meaningWordDTOLis = new ArrayList<>();
+		LanguageDTO langDTO = createEngLangDTO();
+		MeaningWordDTO meaningWordDTO = new MeaningWordDTO();
+		meaningWordDTO.setId(133L);
+		meaningWordDTO.setLang(langDTO);
+		meaningWordDTO.setWord("go");
+		meaningWordDTO.setTargetWordList(createTargetWordsForGo());
+		meaningWordDTOLis.add(meaningWordDTO);
+		meaningWordDTO = new MeaningWordDTO();
+		meaningWordDTO.setId(244L);
 		meaningWordDTO.setLang(langDTO);
 		meaningWordDTO.setWord("black");
 		meaningWordDTO.setTargetWordList(createTargetWordsForBlack());
