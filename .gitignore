@@ -3,6 +3,7 @@
 .project
 .settings/
 *yandex_key.properties
+*src/test/resources/temp_db
 
 # Intellij
 .idea/
