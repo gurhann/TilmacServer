@@ -1,5 +1,7 @@
 package com.kayra.tilmac.server.dao.jpaimpl;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.kayra.tilmac.server.dao.LanguageDAO;
@@ -9,15 +11,9 @@ import com.kayra.tilmac.server.model.Language;
 public class LanguageDAOImpl extends BaseDAOImpl<Language> implements LanguageDAO {
 
 	@Override
-	public Language findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Language findByShortName(String shortName) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = em.createNamedQuery(Language.FIND_BY_SHORT_NAME);
+		return (Language) query.getSingleResult();
 	}
 
 }

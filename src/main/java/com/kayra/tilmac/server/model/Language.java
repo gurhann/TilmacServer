@@ -5,11 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity(name = "Language")
 @Table(name = "language")
+@NamedQueries({
+	@NamedQuery(name = Language.FIND_BY_SHORT_NAME, query = "select l from Language l where l.shortName=:shortName")
+})
 public class Language {
+	
+	public static final String FIND_BY_SHORT_NAME = "Language.findByShortName";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
