@@ -3,14 +3,20 @@ package com.kayra.tilmac.server.model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "MeaningWord")
 @Table(name = "meaning_word")
+@NamedQueries({ @NamedQuery(name = MeaningWord.FIND_BY_NAME, query = "select w from MeaningWord w join fetch w.targetWordList t where w.word=:word and w.lang.shortName=:sourceLang and t.lang.shortName=:targetLang") })
 public class MeaningWord extends BaseWord {
 
-	@OneToMany
+	public static final String FIND_BY_NAME = "MeaningWord.findByName";
+
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<MeaningWord> targetWordList;
 
 	public List<MeaningWord> getTargetWordList() {
