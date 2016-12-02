@@ -1,5 +1,7 @@
 package com.kayra.tilmac.server.dao.jpaimpl;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
@@ -10,9 +12,10 @@ public class MeaninglessWordDAOImpl extends BaseDAOImpl<MeaninglessWord> impleme
 
 	@Override
 	public MeaninglessWord findByName(String text, String langShortName) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = em.createNamedQuery(MeaninglessWord.FIND_BY_NAME);
+		query.setParameter("word", text);
+		query.setParameter("langShortName", langShortName);
+		return (MeaninglessWord) query.getSingleResult();
 	}
-
 
 }
