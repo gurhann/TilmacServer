@@ -18,7 +18,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	private int batchSize;
 
 	@PersistenceContext
-	private EntityManager em;
+	protected EntityManager em;
 
 	public final void setClazz(Class<T> clazzToSet) {
 		this.clazz = clazzToSet;
