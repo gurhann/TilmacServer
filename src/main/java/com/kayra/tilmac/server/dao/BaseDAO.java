@@ -6,9 +6,9 @@ public interface BaseDAO<T> {
 	
 	public void add(T t);
 
-	public Class<T> findById(Object Id);
+	public T findById(Object Id);
 
-	public void update(T t);
+	public T update(T t);
 
 	public void delete(T t);
 
