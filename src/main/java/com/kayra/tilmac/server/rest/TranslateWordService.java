@@ -1,6 +1,13 @@
 package com.kayra.tilmac.server.rest;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
 import com.kayra.tilmac.server.exception.SourceLangAndTargetLangAreSameException;
@@ -14,11 +21,17 @@ import com.kayra.tilmac.server.service.response.ResponseCheckUnavaibleWordsForMe
 import com.kayra.tilmac.server.service.response.ResponseParseBaseWordList;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslateApi;
 
+@Component
+@Path("/word")
 public class TranslateWordService {
 
 	@Autowired
 	private TranslationService translationService;
 
+	@POST
+	@Path("/translateWords")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseTranslateWords translateWords(RequestTranlateWords req) throws RequestWordListIsEmptyException, SourceLangAndTargetLangAreSameException {
 
 		checkInput(req);
