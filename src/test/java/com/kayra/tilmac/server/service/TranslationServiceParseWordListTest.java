@@ -7,8 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
@@ -76,8 +75,8 @@ public class TranslationServiceParseWordListTest {
 		Language trLang = CreateModelObjectUtil.createTrLang();
 
 		List<BaseWordDTO> meaningLessBaseWordDTOList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
-		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
+		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
 		RequestParseBaseWordList req = new RequestParseBaseWordList();
 		req.setBaseWordList(meaningLessBaseWordDTOList);
 		req.setSourceLangCode(engLang.getShortName());
@@ -120,8 +119,8 @@ public class TranslationServiceParseWordListTest {
 		List<BaseWordDTO> baseWordList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		baseWordList.addAll(CreateDTOObjectUtil.createMeaningBaseWordList());
 
-		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningWordDAO.findByName("ase", engLang.getShortName(), trLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
+		when(meaningWordDAO.findByName("qwe", engLang.getShortName(), trLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
 		when(meaningWordDAO.findByName("go", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(0));
 		when(meaningWordDAO.findByName("black", engLang.getShortName(), trLang.getShortName())).thenReturn(meaningWordList.get(1));
 

@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
@@ -90,8 +91,8 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 
 		Language engLang = CreateModelObjectUtil.createEngLang();
 		List<BaseWordDTO> meaningBaseWordDTOList = CreateDTOObjectUtil.createMeaningBaseWordList();
-		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
+		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
 
 		RequestCheckUnavaibleWordsForMeaninglesInLocal req = new RequestCheckUnavaibleWordsForMeaninglesInLocal();
 		req.setUnavailableWordList(meaningBaseWordDTOList);
@@ -109,8 +110,8 @@ public class TranslationServiceCheckUnavailableWordsInLocalTest {
 		List<MeaninglessWord> meaninglessWordList = CreateModelObjectUtil.createMeaningLessWordList();
 		List<BaseWordDTO> baseWordList = CreateDTOObjectUtil.createMeaningLessBaseWordList();
 		baseWordList.addAll(CreateDTOObjectUtil.createMeaningBaseWordList());
-		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(NoResultException.class);
-		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(NoResultException.class);
+		when(meaningLessWordDAO.findByName("go", engLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
+		when(meaningLessWordDAO.findByName("black", engLang.getShortName())).thenThrow(EmptyResultDataAccessException.class);
 		when(meaningLessWordDAO.findByName("ase", engLang.getShortName())).thenReturn(meaninglessWordList.get(0));
 		when(meaningLessWordDAO.findByName("qwe", engLang.getShortName())).thenReturn(meaninglessWordList.get(1));
 

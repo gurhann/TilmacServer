@@ -16,18 +16,21 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.kayra.tilmac.server.dao.LanguageDAO;
 import com.kayra.tilmac.server.dao.MeaningWordDAO;
 import com.kayra.tilmac.server.dao.MeaninglessWordDAO;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
+import com.kayra.tilmac.server.model.MeaningWord;
 import com.kayra.tilmac.server.service.impl.TranslationServiceImpl;
 import com.kayra.tilmac.server.service.request.RequestSearchInTranslateApi;
 import com.kayra.tilmac.server.service.response.ResponseSearchInDictionary;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslate;
 import com.kayra.tilmac.server.service.response.ResponseSearchInTranslateApi;
 import com.kayra.tilmac.server.util.CreateDTOObjectUtil;
+import com.kayra.tilmac.server.util.CreateModelObjectUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,7 +50,10 @@ public class TranslationServiceSearchInTranslateAPITest {
 
 	@Mock
 	public MeaningWordDAO meaningWordDAO;
-	
+
+	@Mock
+	public LanguageDAO langDAO;
+
 	@Test
 	public void givenWordListNullThenThrowException() throws RequestWordListIsEmptyException {
 		RequestSearchInTranslateApi req = new RequestSearchInTranslateApi();
@@ -114,6 +120,14 @@ public class TranslationServiceSearchInTranslateAPITest {
 		when(translateAPIService.searchInDictionary(reqSearchInTranslateApi)).thenReturn(respSearchInDirectory);
 		when(translateAPIService.searchInTranslate(reqSearchInTranslateApi)).thenReturn(respSearchInTranslate);
 
+		when(langDAO.findByShortName("en")).thenReturn(CreateModelObjectUtil.createEngLang());
+		when(langDAO.findByShortName("tr")).thenReturn(CreateModelObjectUtil.createTrLang());
+		List<MeaningWord> createTargetWordsForGo = CreateModelObjectUtil.createTargetWordsForGo();
+		List<MeaningWord> createTargetWordsForBlack = CreateModelObjectUtil.createTargetWordsForBlack();
+		when(meaningWordDAO.findByNameWithoutTargetLang("gitmek", "tr")).thenReturn(createTargetWordsForGo.get(0));
+		when(meaningWordDAO.findByNameWithoutTargetLang("geçmek", "tr")).thenReturn(createTargetWordsForGo.get(1));
+		when(meaningWordDAO.findByNameWithoutTargetLang("siyah", "tr")).thenReturn(createTargetWordsForBlack.get(0));
+		when(meaningWordDAO.findByNameWithoutTargetLang("kara", "tr")).thenReturn(createTargetWordsForBlack.get(1));
 		ResponseSearchInTranslateApi searchInTranslateApi = translationService.searchInTranslateApi(reqSearchInTranslateApi);
 		// verify(translateAPIService.searchInDictionary(meaningBaseWordDTOList));
 		// verify(translateAPIService.searchInTranslate(meaningBaseWordDTOList));
