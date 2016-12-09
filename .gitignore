@@ -3,7 +3,7 @@
 .project
 .settings/
 *yandex_key.properties
-*src/test/resources/temp_db
+derby.log
 
 # Intellij
 .idea/
