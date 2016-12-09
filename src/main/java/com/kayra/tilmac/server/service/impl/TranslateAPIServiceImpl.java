@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.kayra.tilmac.server.dto.BaseWordDTO;
+import com.kayra.tilmac.server.dto.LanguageDTO;
 import com.kayra.tilmac.server.dto.MeaningWordDTO;
 import com.kayra.tilmac.server.dto.MeaninglessWordDTO;
 import com.kayra.tilmac.server.exception.RequestWordListIsEmptyException;
@@ -36,7 +37,10 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
 			throw new RequestWordListIsEmptyException();
 		}
-
+		LanguageDTO sourdeWordLang = new LanguageDTO();
+		LanguageDTO targetWordLang = new LanguageDTO();
+		sourdeWordLang.setShortName(req.getSourceLangCode());
+		targetWordLang.setShortName(req.getTargetLangCode());
 		ResponseSearchInDictionary resp = new ResponseSearchInDictionary();
 		List<MeaningWordDTO> meaningWordList = null;
 		List<BaseWordDTO> unavailableWordList = null;
@@ -45,11 +49,13 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 				JsonNode result = getResultJSONFromApi(word.getWord(), req.getSourceLangCode(), req.getTargetLangCode(), ApiType.DICT);
 				List<String> wordListFromDictJson = getWordListFromDictJson(word.getWord(), result, req.getTargetLangCode());
 				MeaningWordDTO meaningWord = new MeaningWordDTO();
+				meaningWord.setLang(sourdeWordLang);
 				meaningWord.setWord(word.getWord());
 				List<BaseWordDTO> targetWordList = new ArrayList<>();
 				for (String responseWordString : wordListFromDictJson) {
 					BaseWordDTO targetWord = new BaseWordDTO();
 					targetWord.setWord(responseWordString);
+					targetWord.setLang(targetWordLang);
 					targetWordList.add(targetWord);
 				}
 				meaningWord.setTargetWordList(targetWordList);
@@ -76,6 +82,10 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 		if (req.getUnavailableWordList() == null || req.getUnavailableWordList().isEmpty()) {
 			throw new RequestWordListIsEmptyException();
 		}
+		LanguageDTO sourdeWordLang = new LanguageDTO();
+		LanguageDTO targetWordLang = new LanguageDTO();
+		sourdeWordLang.setShortName(req.getSourceLangCode());
+		targetWordLang.setShortName(req.getTargetLangCode());
 		ResponseSearchInTranslate resp = new ResponseSearchInTranslate();
 		List<MeaningWordDTO> meaningWordList = null;
 		List<MeaninglessWordDTO> meaninglessWordList = null;
@@ -84,6 +94,7 @@ public class TranslateAPIServiceImpl implements TranslateAPIService {
 				JsonNode result = getResultJSONFromApi(word.getWord(), req.getSourceLangCode(), req.getTargetLangCode(), ApiType.TRANSLATE);
 				List<String> wordListFromTranslateJson = getWordListFromTranslateJson(word.getWord(), result);
 				MeaningWordDTO meaningWord = new MeaningWordDTO();
+				meaningWord.setLang(sourdeWordLang);
 				meaningWord.setWord(word.getWord());
 				List<BaseWordDTO> targetWordList = new ArrayList<>();
 				for (String responseWordString : wordListFromTranslateJson) {
