@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
@@ -16,6 +17,7 @@ public class BaseWord {
 	private Long id;
 
 	@OneToOne
+	@JoinColumn(name = "lang_id")
 	private Language lang;
 
 	@Column(name = "word")
