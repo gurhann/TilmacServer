@@ -12,7 +12,7 @@ public class LanguageDAOImpl extends BaseDAOImpl<Language> implements LanguageDA
 
 	@Override
 	public Language findByShortName(String shortName) {
-		Query query = em.createNamedQuery(Language.FIND_BY_SHORT_NAME);
+		Query query = em.createNamedQuery(Language.FIND_BY_SHORT_NAME).setParameter("shortName", shortName);
 		return (Language) query.getSingleResult();
 	}
 
