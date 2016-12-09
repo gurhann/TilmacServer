@@ -11,11 +11,9 @@ import javax.persistence.Table;
 
 @Entity(name = "Language")
 @Table(name = "language")
-@NamedQueries({
-	@NamedQuery(name = Language.FIND_BY_SHORT_NAME, query = "select l from Language l where l.shortName=:shortName")
-})
+@NamedQueries({ @NamedQuery(name = Language.FIND_BY_SHORT_NAME, query = "select l from Language l where l.shortName=:shortName") })
 public class Language {
-	
+
 	public static final String FIND_BY_SHORT_NAME = "Language.findByShortName";
 
 	@Id
@@ -26,7 +24,7 @@ public class Language {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "short_name")
+	@Column(name = "short_name", unique = true)
 	private String shortName;
 
 	public int getId() {
